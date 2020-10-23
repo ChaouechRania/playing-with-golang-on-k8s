@@ -75,7 +75,7 @@ func (c *Client) Index(index string, id string, doc interface{}) error {
 }
 
 //Search docs
-func (c *Client) Search(index string) ([]*api.Job, error) {
+func (c *Client) Search(index string) ([]*api.Product, error) {
 	query := elastic.NewMatchAllQuery()
 	searchResult, err := c.client.Search().
 		Index(index).
@@ -83,19 +83,19 @@ func (c *Client) Search(index string) ([]*api.Job, error) {
 		Query(query).
 		Do(c.ctx)
 	if err != nil {
-		return []*api.Job{}, err
+		return []*api.Product{}, err
 	}
-	var job api.Job
-	jobs := make([]*api.Job, 0)
+	var job api.Product
+	jobs := make([]*api.Product, 0)
 	for _, item := range searchResult.Each(reflect.TypeOf(job)) {
-		j := item.(api.Job)
+		j := item.(api.Product)
 		jobs = append(jobs, &j)
 	}
 	return jobs, nil
 }
 
 //GetJob a job from index
-func (c *Client) GetJob(index string, id string) (*api.Job, error) {
+func (c *Client) GetProduct(index string, id string) (*api.Product, error) {
 	getJob, err := c.client.Get().
 		Index(index).
 		Type("_doc").
@@ -108,10 +108,35 @@ func (c *Client) GetJob(index string, id string) (*api.Job, error) {
 	if !getJob.Found {
 		return nil, errors.New("not found")
 	}
-	var job api.Job
+	var job api.Product
 	err = json.Unmarshal(getJob.Source, &job)
 	if err != nil {
 		return nil, err
 	}
 	return &job, nil
 }
+
+//IndexLocations indexes locations in bulk.
+// func (c *Client) IndexLocations(locations []store.Product) (int, error) {
+// 	bulkRequest := c.cfg.EsClient.Bulk()
+
+// 	for _, location := range locations {
+// 		bulkRequest.Add(
+// 			elastic.NewBulkIndexRequest().
+// 				Index(c.cfg.IndexLocations.Name).
+// 				Type(c.cfg.IndexLocations.Type).
+// 				Id(location.Slug).
+// 				Doc(location))
+// 	}
+
+// 	if bulkRequest.NumberOfActions() != len(locations) {
+// 		return 0, fmt.Errorf("upsertBatch: number of bulkable documents is %v instead of %v", bulkRequest.NumberOfActions(), len(locations))
+// 	}
+
+// 	bulkResponse, err := bulkRequest.Do(c.ctx)
+// 	if err != nil {
+// 		return 0, err
+// 	}
+
+// 	return len(bulkResponse.Indexed()), nil
+// }

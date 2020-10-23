@@ -3,3 +3,4 @@ glide.lock
 dump.rdb
 .vscode
 *.code-workspace
+.env

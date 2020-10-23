@@ -8,7 +8,9 @@ import (
 	"os"
 	"os/signal"
 	"playing-with-golang-on-k8s/auth"
+	"playing-with-golang-on-k8s/es"
 	"playing-with-golang-on-k8s/routes"
+
 	"playing-with-golang-on-k8s/server"
 	"playing-with-golang-on-k8s/service"
 	"playing-with-golang-on-k8s/store"
@@ -92,15 +94,16 @@ func start(cmd *cobra.Command, args []string) error {
 	permsService := auth.NewPermissionService(ctx, db)
 	userService := service.NewUserService(db)
 	proService := service.NewProService(db)
-	/*es, err := es.NewClient(ctx)
+	es, err := es.NewClient(ctx)
 	if err != nil {
 		cancel()
 		return errors.Wrap(err, "Oops err when creating elastic client")
-	}*/
-	//indexService := service.NewIndex(es, db)
+	}
+	indexService := service.NewIndex(es, db)
 
 	userActions := routes.NewUserActions(userService)
 	proActions := routes.NewProductActions(db, proService, permsService)
+	indexActions := routes.NewIndexActions(indexService)
 
 	authCfg := auth.NewConfig()
 	authMiddleware, err := auth.NewAuthMiddleware(authCfg, db)
@@ -113,6 +116,7 @@ func start(cmd *cobra.Command, args []string) error {
 		Config:            serverConfig,
 		UserActions:       userActions,
 		ProdsActions:      proActions,
+		IndexActions:      indexActions,
 		PermissionService: permsService,
 	}
 

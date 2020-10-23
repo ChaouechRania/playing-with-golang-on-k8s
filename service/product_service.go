@@ -22,7 +22,7 @@ func NewProService(proStore store.ProductStore) *ProService {
 	}
 }
 
-//CreateOrg create a new org
+//CreatePro create a new org
 func (ps *ProService) CreatePro(ctx context.Context, req *api.ProUpsertRequest) (*shared.Product, error) {
 	if req.Pro == nil {
 		return nil, errors.New("org cannot be nil in creation req")

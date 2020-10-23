@@ -28,6 +28,22 @@ func (c *Client) ListProds(ctx context.Context, req *store.GetProdsRequest, offs
 	return os, err
 }
 
+//List lists job postings at the given position
+func (c *Client) List(ctx context.Context, offset, limit int) ([]store.Product, error) {
+	js := []store.Product{}
+	err := c.db.Model(&store.Product{}).
+		Preload("CreatedBy").
+		Offset(offset).
+		Limit(limit).
+		Find(&js).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return js, err
+}
+
 //DeletePro deletes the product with given ID
 func (c *Client) DeletePro(ctx context.Context, id string) error {
 	org, err := c.GetPro(ctx, id)

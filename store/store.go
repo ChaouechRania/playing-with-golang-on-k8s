@@ -30,18 +30,6 @@ var ErrHasAlreadyProfile = errors.New("User has already a profile")
 var ErrOrgAlreadyExists = errors.New("The org already exists")
 var ErrProAlreadyExists = errors.New("The product already exists")
 
-//JobStore represents the interface to manage jobs storage
-/*type JobStore interface {
-	Create(context.Context, *Job) (*Job, error)
-	Update(context.Context, *Job) (*Job, error)
-	Delete(context.Context, string) error
-	Get(context.Context, string) (*Job, error)
-	List(ctx context.Context, offset int, limit int) ([]Job, error)
-	Count(context.Context) (int, error)
-	Publish(context.Context, string) error
-	Archive(context.Context, string) error
-}*/
-
 //UserStore represents the interface to manage users storage
 type UserStore interface {
 	CreateUser(context.Context, *User) (*User, error)
@@ -56,24 +44,9 @@ type ProductStore interface {
 	GetPro(context.Context, string) (*Product, error)
 	UpdatePro(context.Context, *Product) (*Product, error)
 	DeletePro(context.Context, string) error
+	//List all Products
+	List(ctx context.Context, offset int, limit int) ([]Product, error)
+	//ListProds By UserID
 	ListProds(ctx context.Context, req *GetProdsRequest, offset, limit int) ([]*Product, error)
 	ProAlreadyExists(ctx context.Context, org *Product) (bool, error)
 }
-
-//ProfileStore represents the interface to manage recruiters storage
-/*type ProfileStore interface {
-	CreateProfile(context.Context, *Profile) (*Profile, error)
-	Authenticate(context.Context, string, string) (*User, error)
-	HasAlreadyProfile(context.Context, *User) (bool, error)
-	GetForUser(context.Context, string) (*Profile, error)
-}*/
-
-//OrganizationStore the store interface for organizations
-/*type OrganizationStore interface {
-	CreateOrg(context.Context, *Organization) (*Organization, error)
-	GetOrg(context.Context, string) (*Organization, error)
-	UpdateOrg(context.Context, *Organization) (*Organization, error)
-	DeleteOrg(context.Context, string) error
-	ListOrgs(ctx context.Context, req *GetOrgsRequest, offset, limit int) ([]*Organization, error)
-	OrgAlreadyExists(ctx context.Context, org *Organization) (bool, error)
-}*/

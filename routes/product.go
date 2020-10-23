@@ -161,3 +161,20 @@ func (as ProductActions) Update(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, pro)
 }
+
+// GetProducts retrieve prodcucts
+func (as ProductActions) GetProducts(c *gin.Context) {
+	products, err := as.Prods.List(c.Request.Context(), 0, 20)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	//jr := api.ToProductsResult(products)
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+	// 	return
+	// }
+	c.JSON(http.StatusOK, products)
+}
