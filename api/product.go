@@ -9,6 +9,8 @@ import (
 const (
 	ProNameMask        = "pro.name"
 	ProDescriptionMask = "pro.description"
+	ProPriceMask       = "pro.price"
+	ProQuantityMask    = "pro.quantity"
 )
 
 //Product is used for product creation
@@ -16,6 +18,8 @@ type Product struct {
 	ID          string     `json:"id"`
 	Name        string     `json:"name" valid:"required~The name is required"`
 	Description string     `json:"description"`
+	Price       float32    `json:"price"`
+	Quantity    int        `json:"quantity"`
 	CreatedAt   time.Time  `json:"createdAt,omitempty"`
 	UpdatedAt   time.Time  `json:"updatedAt,omitempty"`
 	DeletedAt   *time.Time `json:"deletedAt,omitempty"`

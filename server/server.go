@@ -47,7 +47,7 @@ type Server struct {
 	ProdsActions      *routes.ProductActions
 	PermissionService *auth.PermissionService
 	IndexActions      *routes.IndexActions
-	//SearchActions     *routes.SearchActions
+	SearchActions     *routes.SearchActions
 }
 
 //Run setup the app with all dependencies
@@ -62,7 +62,7 @@ func (s *Server) Run() error {
 
 	r.GET("/status", routes.GetStatus)
 
-	r.POST("/admin/indexations", s.IndexActions.IndexAll)
+	//r.POST("/admin/indexations", s.IndexActions.IndexAll)
 
 	auth := r.Group("/api/auth")
 	{
@@ -91,13 +91,13 @@ func (s *Server) Run() error {
 		prods.DELETE("/:id", s.Config.AuthMiddleware.MiddlewareFunc(), s.ProdsActions.Delete)
 		prods.PUT("/:id", s.Config.AuthMiddleware.MiddlewareFunc(), s.ProdsActions.Update)
 	}
-	/*indexer := r.Group("/indexations")
+	indexer := r.Group("/indexations")
 	{
-		indexer.POST("", s.IndexationActions.IndexOne)
-		indexer.GET("/bulks", s.IndexationActions.IndexLocations)
-		indexer.GET("/suggestions", s.IndexationActions.IndexSuggestions)
-		indexer.DELETE("/:name", s.IndexationActions.DeleteIndex)
-	}*/
+		indexer.POST("", s.IndexActions.IndexOne)
+		indexer.GET("/bulks", s.IndexActions.IndexAll)
+		indexer.POST("/search", s.SearchActions.Products)
+		//indexer.DELETE("/:name", s.IndexationActions.DeleteIndex)
+	}
 
 	return r.Run(":" + s.Config.Port)
 }

@@ -46,6 +46,23 @@ func NewIndex(
 	}
 }
 
+//IndexOneProduct index one product
+func (i *Index) IndexOne(ctx context.Context, req *api.ProUpsertRequest) error {
+	err := i.es.CreateIndex(proMapping, proIndex)
+	if err != nil {
+		return err
+	}
+	/*if req.Pro == nil {
+		return nil
+		i.es.Index(proIndex, req.Pro.ID, req.Pro)
+		if err != nil {
+			return nil
+		}
+	}	return nil*/
+	i.es.Index(proIndex, req.Pro.ID, req.Pro)
+	return nil
+}
+
 //IndexJobs indexes all jobs
 func (i *Index) IndexProducts(ctx context.Context) error {
 	err := i.es.CreateIndex(proMapping, proIndex)

@@ -14,6 +14,8 @@ type Product struct {
 	Name        string     `json:"name,omitempty"`
 	Slug        string     `json:"slug,omitempty"`
 	Description string     `json:"description,omitempty"`
+	Price       float32    `json:"price,omitempty"`
+	Quantity    int        `json:"quantity,omitempty"`
 	CreatedByID string     `json:"createdByID,omitempty"`
 	CreatedAt   time.Time  `json:"createdAt"`
 	UpdatedAt   *time.Time `json:"updatedAt,omitempty"`

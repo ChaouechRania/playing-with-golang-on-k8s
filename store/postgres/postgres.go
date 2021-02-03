@@ -32,7 +32,7 @@ func NewConfig() *Config {
 
 	return &Config{
 		Host:     viper.GetString("dbHost"),
-		Port:     viper.GetInt("dbPort"),
+		Port:     5444,
 		Username: viper.GetString("dbUser"),
 		Password: viper.GetString("dbPassword"),
 		Database: viper.GetString("dbName"),

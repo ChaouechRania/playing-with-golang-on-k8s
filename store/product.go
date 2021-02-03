@@ -13,6 +13,8 @@ type Product struct {
 	Name        string
 	Slug        string
 	Description string
+	Price       float32
+	Quantity    int
 	CreatedByID string
 	CreatedBy   User `gorm:"foreignkey:CreatedByID;association_foreignkey:ID"`
 	CreatedAt   time.Time
@@ -33,6 +35,8 @@ func ProFromAPI(pro *shared.Product) *Product {
 		ID:          pro.ID,
 		Name:        pro.Name,
 		Description: pro.Description,
+		Price:       pro.Price,
+		Quantity:    pro.Quantity,
 		CreatedByID: pro.CreatedByID,
 		CreatedAt:   pro.CreatedAt,
 		DeletedAt:   pro.DeletedAt,

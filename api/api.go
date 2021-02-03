@@ -44,34 +44,6 @@ type User struct {
 	UpdatedAt  *time.Time `json:"updatedAt,omitempty"`
 }
 
-//RecruiterCreationRequest represents a view object to create a recruiter
-type RecruiterCreationRequest struct {
-	UserCreationRequest
-	FirstName        string `json:"firstname" valid:"runelength(2|50)~Password must have at least 2 characters"`
-	LastName         string `json:"lastname" valid:"runelength(2|50)~Password must have at least 2 characters"`
-	JobTitle         string `json:"jobTitle" valid:"runelength(2|50)~Password must have at least 2 characters"`
-	OrganizationName string `json:"organizationName" valid:"required,runelength(2|50)~organizationName must have at least 2 characters"`
-}
-
-//ToUserCreationRequest to user creation request
-func (request *RecruiterCreationRequest) ToUserCreationRequest() *UserCreationRequest {
-	return &UserCreationRequest{
-		Email:      request.Email,
-		Password:   request.Password,
-		RememberMe: true,
-	}
-}
-
-//ToStoreUser converts a api.User to sotre.User object
-func (request *RecruiterCreationRequest) ToStoreUser(createdAt time.Time) *store.User {
-	return &store.User{
-		Email:      request.Email,
-		Password:   request.Password,
-		RememberMe: true,
-		CreatedAt:  &createdAt,
-	}
-}
-
 //Login represents auth data
 type Login struct {
 	Email    string `json:"email" valid:"email~Invalid email"`
@@ -94,15 +66,6 @@ func AuthUserFromStore(user *store.User) *AuthenticatedUser {
 
 const identityKey = "id"
 
-//AddressCreate represents a postal address as defined in schema.org
-type AddressCreate struct {
-	Locality    string `json:"locality"`
-	Street      string `json:"street"`
-	Region      string `json:"region"`
-	PostalCode  string `json:"postalCode"`
-	CountryCode string `json:"countryCode"`
-}
-
 //OrganizationFromStore converts store.Organization to Organization
 func ProductFromStore(org *store.Product) *shared.Product {
 	return &shared.Product{
@@ -110,6 +73,8 @@ func ProductFromStore(org *store.Product) *shared.Product {
 		Slug:        org.Slug,
 		Name:        org.Name,
 		Description: org.Description,
+		Price:       org.Price,
+		Quantity:    org.Quantity,
 		CreatedByID: org.CreatedByID,
 		CreatedAt:   org.CreatedAt,
 		UpdatedAt:   &org.UpdatedAt,
@@ -132,6 +97,8 @@ func ToStoreProduct(org *shared.Product) *store.Product {
 		ID:          org.ID,
 		Name:        org.Name,
 		Description: org.Description,
+		Price:       org.Price,
+		Quantity:    org.Quantity,
 		CreatedAt:   org.CreatedAt,
 		DeletedAt:   org.DeletedAt,
 	}

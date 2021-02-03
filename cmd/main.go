@@ -34,7 +34,7 @@ func main() {
 
 	f := cmd.Flags()
 	f.String("dbHost", "localhost", "database host")
-	f.Int("dbPort", 5432, "database port")
+	f.Int("dbPort", 5444, "database port")
 	f.String("dbName", "", "database name")
 	f.String("dbUser", "", "database username")
 	f.String("dbPassword", "", "database password")
@@ -94,6 +94,7 @@ func start(cmd *cobra.Command, args []string) error {
 	permsService := auth.NewPermissionService(ctx, db)
 	userService := service.NewUserService(db)
 	proService := service.NewProService(db)
+
 	es, err := es.NewClient(ctx)
 	if err != nil {
 		cancel()
@@ -104,6 +105,7 @@ func start(cmd *cobra.Command, args []string) error {
 	userActions := routes.NewUserActions(userService)
 	proActions := routes.NewProductActions(db, proService, permsService)
 	indexActions := routes.NewIndexActions(indexService)
+	searchActions := routes.NewSearchActions(indexService)
 
 	authCfg := auth.NewConfig()
 	authMiddleware, err := auth.NewAuthMiddleware(authCfg, db)
@@ -118,6 +120,7 @@ func start(cmd *cobra.Command, args []string) error {
 		ProdsActions:      proActions,
 		IndexActions:      indexActions,
 		PermissionService: permsService,
+		SearchActions:     searchActions,
 	}
 
 	errChan := make(chan error)

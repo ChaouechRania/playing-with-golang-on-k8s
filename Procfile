@@ -1,1 +1,1 @@
-web: baara-api
+web: playing-with-golang-on-k8s
