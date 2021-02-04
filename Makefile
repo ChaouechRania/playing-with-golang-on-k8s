@@ -9,7 +9,7 @@ teardown:
 	docker-compose -f ./deploy/local/docker-compose.yml stop
 
 serve:
-	go run cmd/main.go --dbHost localhost --dbUser user  --dbPassword secret  --dbName productdb
+	go run cmd/playing-with-golang-on-k8s.go --dbHost localhost --dbUser user  --dbPassword secret  --dbName productdb
 
 test:
 	go test ./...
@@ -19,4 +19,4 @@ TEST_ES_HOST=127.0.0.1
 TEST_ES_PORT=9200
 
 build:
-	go build cmd/main.go
+	go build cmd/playing-with-golang-on-k8s.go
