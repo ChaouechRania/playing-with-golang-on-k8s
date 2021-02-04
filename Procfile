@@ -1,1 +1,1 @@
-web: playing-with-go-on-kubernetes
+web: playing-with-golang-on-k8s
