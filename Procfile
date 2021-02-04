@@ -1,1 +1,1 @@
-web: playing-with-golang-on-k8s
+web: main
