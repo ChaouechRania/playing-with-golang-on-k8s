@@ -1,1 +1,1 @@
-web: bin/playing-with-golang-on-k8s
+web: playing-with-golang-on-k8s
